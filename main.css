@@ -108,10 +108,10 @@ body {
     color: #838383;
     background-color: #d6d6d6; 
 }
-.back {
+.bck {
     position: absolute;
-    top: 585px;
-    left: 50px;
+    top: 310px;
+    left: 480px;
     height: 50px;
     width: 100px;
     border-radius: 17%;
@@ -120,4 +120,34 @@ body {
     background-color: #cec000;
     font-weight: bold;
     font-size: 20px;
+}
+#msg2 {
+    border: 0.5rem outset rgb(211, 207, 2);
+    border-radius: 12px;
+    font-family: Helvetica;
+    margin: 0.5rem;
+    padding: 1rem;
+    outline-offset: 0.5rem;
+    font-size: 20px;
+    font-weight: bold;
+}
+#msg3 {
+    border: 0.5rem outset rgb(211, 207, 2);
+    border-radius: 12px;
+    font-family: Helvetica;
+    margin: 0.5rem;
+    padding: 1rem;
+    outline-offset: 0.5rem;
+    font-size: 20px;
+    font-weight: bold;
+}
+#msg4 {
+    border: 0.5rem outset rgb(211, 207, 2);
+    border-radius: 12px;
+    font-family: Helvetica;
+    margin: 0.5rem;
+    padding: 1rem;
+    outline-offset: 0.5rem;
+    font-size: 20px;
+    font-weight: bold;
 }
