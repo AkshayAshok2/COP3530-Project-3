@@ -1,0 +1,123 @@
+:root {
+    --yellow: #f1f139;
+    --white: #FFFFFF;
+    --black: #000000;
+}
+body {
+    background: var(--bg);
+    color: var(--fontColor);
+    font-family: Arial;
+    
+}
+#subtitle {
+    border: none;
+    color: #f3f3f3;
+    background-color: #cec000;
+    border-radius: 12px;
+    font-family: Arial;
+    margin: 0.5rem;
+    padding: 1rem;
+    outline-offset: 0.5rem;
+    width: 360px;
+    font-size: 16px;
+    font-weight: bold
+}
+#msg {
+    border: 0.5rem outset rgb(211, 207, 2);
+    border-radius: 12px;
+    font-family: Helvetica;
+    margin: 0.5rem;
+    padding: 1rem;
+    outline-offset: 0.5rem;
+    width: 800px;
+    font-size: 20px;
+    font-weight: bold
+}
+#title {
+    font-size: 256px;
+    font-weight: bold;
+}
+
+.light-theme {
+    --bg: var(--yellow);
+    --fontColor: var(--black);
+    --btnBg: var(--black);
+    --btnFontColor: var(--white);
+}
+.dark-theme {
+    --bg: var(--black);
+    --fontColor: var(--yellow);
+    --btnBg: var(--yellow);
+    --btnFontColor: var(--black);
+}
+.btn {
+    position: absolute;
+    top: 585px;
+    left: 50px;
+    height: 50px;
+    width: 100px;
+    border-radius: 17%;
+    border: none;
+    color: #f3f3f3;
+    background-color: #cec000;
+    font-weight: bold;
+    font-size: 20px;
+}
+.bpdp {
+    position: absolute;
+    top: 530px;
+    left: 50px;
+    height: 30px;
+    width: 150px;
+    border-radius: 5%;
+    border: none;
+    color: var(--btnFontColor);
+    background-color: var(--btnBg);
+    font-weight: bold
+}
+.filter {
+    position: absolute;
+    top: 530px;
+    left: 205px;
+    height: 30px;
+    width: 150px;
+    border-radius: 5%;
+    border: none;
+    color: var(--btnFontColor);
+    background-color: var(--btnBg);
+    font-weight: bold
+}
+
+.input1 {
+    position: absolute;
+    top: 388px;
+    left: 160px;
+    height: 30px;
+    width: 670px;
+    border: none;
+    color: #838383;
+    background-color: #d6d6d6; 
+}
+.input2 {
+    position: absolute;
+    top: 467px;
+    left: 160px;
+    height: 30px;
+    width: 670px;
+    border: none;
+    color: #838383;
+    background-color: #d6d6d6; 
+}
+.back {
+    position: absolute;
+    top: 585px;
+    left: 50px;
+    height: 50px;
+    width: 100px;
+    border-radius: 17%;
+    border: none;
+    color: #f3f3f3;
+    background-color: #cec000;
+    font-weight: bold;
+    font-size: 20px;
+}
