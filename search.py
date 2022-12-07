@@ -4,12 +4,13 @@
 Search module.
 """
 
+import ast
 import csv
 import re
 
 text = []
 episode_index = []
-episode = {}
+episode_data = {}
 
 with open("data.csv", encoding="ansi") as f:
     csv_file = csv.DictReader(f)
@@ -17,9 +18,11 @@ with open("data.csv", encoding="ansi") as f:
     for line in csv_file:
         script = line["Processed Script"].split()
         text += script
-        for i in range(len(script)):
+        for _ in range(len(script)):
             episode_index.append(line_index)
-        episode[line_index] = [line["Code"], line["Title"], line["Description"]]
+        episode_data[line_index] = {"Code": line["Code"], "Title": line["Title"],
+                "Description": line["Description"],
+                "Characters": ast.literal_eval(line["Characters"])}
         line_index += 1
 
 text_length = len(text)
@@ -49,6 +52,7 @@ def get_mask(index, word):
     return 0
 
 def bp_dp_search_helper(index, parameters, not_zero, search_range, previous_input):
+    """Helper function for BP-DP-Search."""
     ranks = {}
     pattern_length, word_bound = parameters
     HP, HN, VP, VN, D0, score = previous_input
@@ -69,66 +73,81 @@ def bp_dp_search_helper(index, parameters, not_zero, search_range, previous_inpu
         if rank > 0:
             episode = episode_index[j]
             if episode in ranks:
-                ranks[episode].append((j, rank))
+                ranks[episode] -= rank
             else:
-                ranks[episode] = [(j, rank)]
+                ranks[episode] = -rank
     return ranks, next_input
 
 def bp_dp_search(pattern, word_bound, search_range=range(0, text_length)):
+    """Implements BP-DP-Search."""
     pattern, length, previous_input = preprocess(pattern)
     ranks, _ = bp_dp_search_helper(process(pattern, length), (length, word_bound),
             previous_input[2], search_range, previous_input)
     return ranks
 
-# TODO: Optimize
 def filter_search(pattern, word_bound):
+    """Implements Filter Search."""
     ranks = {}
     pattern, pattern_length, initial_input = preprocess(pattern)
     index = process(pattern, pattern_length)
     previous_input = initial_input
+    initial_position = pattern_length - word_bound
+    end = text_length - initial_position
     i = 0
-    while i < text_length - pattern_length + word_bound:
+    while i < end:
         counter = 0
-        position = pattern_length - word_bound
+        position = initial_position
         while position > 0:
-            if get_mask(index, text[i + position - 1]) == 0:
+            if text[i + position - 1] not in index:
                 counter += 1
             if counter > word_bound:
                 break
             position -= 1
         if position == 0:
-            search, previous_input = bp_dp_search_helper(index, (pattern_length, word_bound),
-                    (1 << pattern_length) - 1, range(i, i + pattern_length - word_bound),
+            result, previous_input = bp_dp_search_helper(index, (pattern_length, word_bound),
+                    (1 << pattern_length) - 1, range(i, i + initial_position),
                     previous_input)
-            for result in search:
-                if result in ranks:
-                    ranks[result] += search[result]
+            for k, v in result.items():
+                if k in ranks:
+                    ranks[k] += v
                 else:
-                    ranks[result] = search[result]
+                    ranks[k] = v
             i += 1
         else:
             i += position
             previous_input = initial_input
     return ranks
 
-def sum_ranks(ranks):
-    result = 0
-    for j, rank in ranks:
-        result -= rank
-    return result
 
 def search(pattern, characters, word_bound, use_filter):
-    ranks = {}
-    if use_filter:
-        ranks = filter_search(pattern, word_bound)
-    else:
-        ranks = bp_dp_search(pattern, word_bound)
-    codes = []
-    titles = []
-    descriptions = []
-    for ep in [episode[k] for k, v in sorted(ranks.items(), key=lambda item: sum_ranks(item[1]))]:
-        codes.append(ep[0])
-        titles.append(ep[1])
-        descriptions.append(ep[2])
-    return codes, titles, descriptions
-    
+    """Outputs codes, titles, and descriptions of episodes containing a pattern or characters."""
+    output = ([], [], [])
+    pattern_ranks = {}
+    character_ranks = {}
+    ranks = []
+    no_pattern = pattern == ""
+    no_characters = characters == ""
+    if not no_pattern:
+        if use_filter:
+            pattern_ranks = filter_search(pattern, word_bound)
+        else:
+            pattern_ranks = bp_dp_search(pattern, word_bound)
+        if no_characters:
+            ranks = [(k, (v, 0)) for k, v in pattern_ranks.items()]
+    if not no_characters:
+        for k, v in episode_data.items():
+            episode_characters = v["Characters"]
+            if all(character in episode_characters for character in characters.split(";")):
+                character_ranks[k] = len(episode_characters)
+        if no_pattern:
+            ranks = [(k, (v, 0)) for k, v in character_ranks.items()]
+        else:
+            for k, v in pattern_ranks.items():
+                if k in character_ranks:
+                    ranks.append((k, (v, character_ranks[k])))
+    ranks.sort(key=lambda rank: rank[1])
+    for episode in [episode_data[rank[0]] for rank in ranks]:
+        output[0].append(episode["Code"])
+        output[1].append(episode["Title"])
+        output[2].append(episode["Description"])
+    return output
