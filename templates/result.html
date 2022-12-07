@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project: LOIS</title>
+    <link rel="stylesheet" href="../static/main.css">
+    <script src=
+    "https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js">
+    </script>
+</head>
+<body class="bpdp-search">
+   <center><h id="title">LOIS</h></center>
+   <center><p id="subtitle">The Must Have For Any Family Guy Enthusiast</p></center>
+    <div id='parent'></div>
+    <table>
+        <tr>
+          <th id="msg2">S#E#</th>
+          <th id="msg3">Episode Title</th>
+          <th id="msg4">Episode Description</th>
+        </tr>
+        <tr>
+        <td id="myList"></td>
+        <td id="myList2"></td>
+        <td id="myList3"></td>
+        </tr>
+      </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+      <script>
+        $.ajax({
+          type: "GET",
+          url: "{{ url_for('create') }}",
+          data: results
+        })
+        let data1 = results['codes']; // codes
+        let data2 = results['titles']; // titles
+        let data3 = results['descriptions']; // descriptions
+    
+        let list = document.getElementById("myList");
+        data1.forEach((item) => {
+          let p = document.createElement("p");
+          p.innerText = item;
+          list.appendChild(p);
+        });
+
+        list = document.getElementById("myList2");
+        data2.forEach((item) => {
+          let p = document.createElement("p");
+          p.innerText = item;
+          list.appendChild(p);
+        });
+
+        list = document.getElementById("myList3");
+        data3.forEach((item) => {
+          let p = document.createElement("p");
+          p.innerText = item;
+          list.appendChild(p);
+        });
+      </script>
+    <script type="module" src="../static/app.js"></script>
+    <noscript>You need to enable JavaScript to view the full site.</noscript>
+</body>
+</html>
