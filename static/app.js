@@ -13,32 +13,12 @@ switcher.addEventListener('click', function() {
 
     //if enter button is clicked, store the information.
     document.write(temp);
-    alert("Document written!");
-    // const characters = document.getElementsByName('characters')[0].value;
-    // alert(characters);
-    // const keywords = document.getElementsByName('keywords')[0].value;
-    // alert(keywords);
-    // const error = document.getElementsByName('errors')[0].value;
-    // alert(error);
-    // const input = {characters, keywords, error, temp};
-    // alert(temp);
-    // alert("Variables loaded.")
-
-    // $.ajax({
-    //     type: 'POST',
-    //     url: "{{ url_for('create') }}",
-    //     data: input
-    // })
-    // alert("jQuery called.")
-    //Akshay: function(charInput, keyInput)
 
     //now move onto the next page
     location.href = "../templates/result.html";
-    alert("New page!");
+
     //clear everything afterwards
-    
     temp = "BPDP";
-    alert("Inputs cleared.");
 });
 
 searching.addEventListener('click', function() {

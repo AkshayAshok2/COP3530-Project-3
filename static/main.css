@@ -158,3 +158,9 @@ body {
     font-size: 20px;
     font-weight: bold;
 }
+.lois {
+    position: absolute;
+    text-align: center;
+    left: 43%;
+    top: 14%;
+}
