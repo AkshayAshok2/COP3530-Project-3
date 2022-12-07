@@ -1,20 +1,39 @@
-from flask import Flask, request, render_template, redirect, url_for
+import json
+from flask import Flask, request, render_template, redirect, url_for, session
+import search
 
 app = Flask(__name__)
 
-@app.route("/<name>")
-def home(name):
-    return render_template("test.html", content=["time", "to", "go"])
+@app.route("/")
+def index():
+    return render_template("index.html")
 
-# @app.route('/')
-# def my_form():
-#     return render_template('my_form.html')
+@app.route("/templates/result.html")
+def result():
+    return render_template("result.html")
 
-# @app.route('/', methods=['POST'])
-# def my_form_post():
-#     characters = request.form['characters'] # Gets list of characters
-#     keywords = request.form['keywords'] # Gets word/phrase for search
-#     return 'Hello'
+@app.route('/', methods=['POST', 'GET'])
+def create():
+    if request.method == 'POST':
+        chars = request.form.get('characters')
+        keys = request.form.get('keywords')
+        kind = request.form.get('search')
+        err = int(request.form.get('error'))
+
+        if kind == "Filer":
+            kind = True
+        else:
+            kind = False
+
+        codes, titles, descriptions = search.search(keys, chars, err, kind)
+        results = {}
+        results['codes'] = codes
+        results['titles'] = titles
+        results['descriptions'] = descriptions
+
+        with open('results.json', 'w') as file:
+            json.dump(results, file)
+        return (results, 204)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
