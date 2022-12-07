@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project: LOIS</title>
+    <link rel="stylesheet" href="../static/main.css">
+</head>
+<body class="bpdp-search">
+    <center>
+        <h id="title">LOIS</h>
+        <p id="subtitle">The Must Have For Any Family Guy Enthusiast</p>
+        <div class="lois">
+            <img src="loispic.png" alt="Lois Griffin" style="width:110px; height:124px;">
+        </div> 
+        <p id="msg">Characters:  <input type="textbox" name="characters" style="width: 580px;"><br>
+        <p id="msg">Key Words:  </label><input type="textbox" name="keywords" style="width: 580px;"><br>
+        <table>
+            <td><p id="err">Error: </label><input type="textbox" name="errors" style="width: 50px;"><br></td>
+            <td><button class="search">BPDP Search</button></td>
+        </table>
+    </center>
+    <div>
+        <center><button onclick="post()" class="btn">Enter</button></center>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script>
+        function post() {
+            const characters = document.getElementsByName('characters')[0].value;
+            const keywords = document.getElementsByName('keywords')[0].value;
+            const error = document.getElementsByName('errors')[0].value;
+		    const search = temp;
+            const input = {characters, keywords, search, error};
+
+            $.ajax({
+                type: "POST",
+                url: "{{ url_for('create') }}",
+                data: input
+            })
+
+            document.getElementsByName('characters')[0].value = "";
+            document.getElementsByName('keywords')[0].value = "";
+            document.getElementsByName('error')[0].value = "";
+            document.getElementsByName('search')[0].value = "";
+        }
+    </script>
+    <script src="../static/app.js"></script>
+    <noscript>You need to enable JavaScript to view the full site.</noscript>
+</body>
+</html>
